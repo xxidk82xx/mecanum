@@ -2,12 +2,27 @@
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
 /*    Author:       bossman                                                   */
-/*    Created:      11/10/2023, 12:43:55                                      */
+/*    Created:      20/10/2023, 13:03:42                                      */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// FR                   motor         4               
+// FL                   motor         5               
+// BL                   motor         6               
+// BR                   motor         7               
+// Controller1          controller                    
+// LaunchSwitch         limit         A               
+// Pult                 motor         9               
+// Lift                 motor         1               
+// LiftSwitch           limit         H               
+// Intake               motor         10              
+// ---- END VEXCODE CONFIGURED DEVICES ----
 #include "robot-config.h"
 
 using namespace vex;
@@ -28,13 +43,17 @@ competition Competition;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-  FR.spin(forward);  
-  FL.spin(forward);
-  BL.spin(forward);
-  BR.spin(forward);
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+  BL.spin(forward);
+  FL.spin(forward);
+  FR.spin(forward);
+  BR.spin(forward);
+  Pult.setVelocity(50, percent);
+  Lift.setVelocity(50, percent);
+  Lift.setMaxTorque(100, percent);
+  Pult.setStopping(brake);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -51,7 +70,9 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-  FR.setVelocity(100, percent);
+  Pult.spin(forward);
+  waitUntil(LaunchSwitch.pressing());
+  Pult.stop();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -64,21 +85,44 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+ 
+
 void usercontrol(void) {
   // User control code here, inside the loop
-  while (1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
 
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
-    FL.setVelocity(Con1.Axis3.position(percent)-Con1.Axis4.position(percent) - Con1.Axis1.position(percent), percent);
-    FR.setVelocity(Con1.Axis3.position(percent)+Con1.Axis4.position(percent) + Con1.Axis1.position(percent), percent);
-    BR.setVelocity(Con1.Axis3.position(percent)-Con1.Axis4.position(percent) + Con1.Axis1.position(percent), percent);
-    BL.setVelocity(Con1.Axis3.position(percent)+Con1.Axis4.position(percent) - Con1.Axis1.position(percent), percent);
+  while (1) {
+    BL.setVelocity(Controller1.Axis3.position(percent) + Controller1.Axis4.position(percent), percent);
+    FL.setVelocity(Controller1.Axis3.position(percent) + Controller1.Axis4.position(percent), percent);
+    FR.setVelocity(Controller1.Axis3.position(percent) - Controller1.Axis4.position(percent), percent);
+    BR.setVelocity(Controller1.Axis3.position(percent) - Controller1.Axis4.position(percent), percent);
+
+    //if(!LaunchSwitch.pressing() || Con1.ButtonA.pressing())
+    //  Pult.spin(forward);
+    //else
+    //  Pult.stop();
+    if(Controller1.ButtonA.pressing()) 
+    {
+      Lift.spin(reverse);
+    }
+    else if(LiftSwitch.pressing()) 
+      Lift.stop();
+    else if (Controller1.ButtonB.pressing())
+      Lift.spin(forward);
+    else 
+    {
+      Lift.setStopping(brake);
+      Lift.stop();
+    }
+    if(Controller1.ButtonX.pressing())
+      Intake.spin(forward);
+    else if(Controller1.ButtonY.pressing())
+      Intake.stop();
+      
+    if(Controller1.ButtonR2.pressing())
+    {
+      Pult.spinFor(forward, 1, turns);
+    }
+
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
@@ -95,7 +139,6 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
-
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
