@@ -54,6 +54,42 @@ void pre_auton(void) {
   Lift.setVelocity(50, percent);
   Lift.setMaxTorque(100, percent);
   Pult.setStopping(brake);
+  Brain.Screen.setFont(monoXS);
+  Brain.Screen.print("                            .oodMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print("                   .oodMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print("       ..oodMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" oodMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" MMMMMMMMMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print(" `^^^^^^MMMMMMM  MMMMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print("       ````^^^^  ^^MMMMMMMMMMMMMMMMM");
+  Brain.Screen.newLine();
+  Brain.Screen.print("                      ````^^^^^^MMMM");
+  Brain.Screen.newLine();
 }
 
 /*---------------------------------------------------------------------------*/
